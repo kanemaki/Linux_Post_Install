@@ -126,7 +126,7 @@ sudo rm -rf /var/cache/snapd
 sudo rm -rf ~/snap
 
 ## removing Canonical reports ##
-sudo apt remove --purge apport apport-gtk apport-symptoms
+sudo apt remove --purge apport apport-gtk apport-symptoms -y
 
 ## less use of swap ##
 sudo echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> /etc/sysctl.conf 
