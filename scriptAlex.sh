@@ -118,7 +118,7 @@ wget -c "$FLATPAK_ZOOM"              -P "$DIRECTORY_DOWNLOADS"
 
 ## installing .flatpakref packages downloaded in the previous session ##
 sudo flatpak install $DIRECTORY_DOWNLOADS/*.flatpakref
-sudo gdebi $DIRECTORY_DOWNLOADS/*.deb -y
+sudo gdebi $DIRECTORY_DOWNLOADS/*.deb
 
 ## removing Snap##
 sudo apt remove --purge snapd gnome-software-plugin-snap -y
