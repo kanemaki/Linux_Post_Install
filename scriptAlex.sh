@@ -31,6 +31,7 @@ FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/com.slack.Slack.flatpakref"
 	"https://dl.flathub.org/repo/appstream/com.github.micahflee.torbrowser-launcher.flatpakref"
 	"https://dl.flathub.org/repo/appstream/us.zoom.Zoom.flatpakref"
+	"https://dl.flathub.org/repo/appstream/org.filezillaproject.Filezilla.flatpakref"
 )
 
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
