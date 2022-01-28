@@ -33,6 +33,7 @@ FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/us.zoom.Zoom.flatpakref"
 	"https://dl.flathub.org/repo/appstream/org.filezillaproject.Filezilla.flatpakref"
 	"https://dl.flathub.org/repo/appstream/org.ppsspp.PPSSPP.flatpakref"
+	"https://dl.flathub.org/repo/appstream/com.usebottles.bottles.flatpakref"
 )
 
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
