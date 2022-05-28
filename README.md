@@ -1,5 +1,5 @@
 # Linux_Post_Install
-Shell Script to automate the installation and configuration of programs
+Shell Script to automate the installation and configuration of programs.
 
 After repeating this process for two weekends testing 
 - Pop!_Os
