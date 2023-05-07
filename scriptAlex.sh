@@ -1,9 +1,34 @@
 #!/bin/bash
 
-# ----------------------------- variables ----------------------------- #
-PPA_FLATPAK="ppa:alexlarsson/flatpak"
-PPA_SHUTTER="ppa:linuxuprising/shutter"
-PPA_PEEK="ppa:peek-developers/stable"
+# --------------------------------------------------------------------------- #
+# ----------------------------- remover snap -------------------------------- #
+
+sudo snap remove --purge firefox
+sudo snap remove --purge snap-store
+sudo snap remove --purge gnome-3-38-2004
+sudo snap remove --purge gtk-common-themes
+sudo snap remove --purge snapd-desktop-integration
+sudo snap remove --purge bare
+sudo snap remove --purge core20
+sudo snap remove --purge snapd gnome-software-plugin-snap -y
+
+sudo apt purge snapd -y
+
+sudo rm -rf /var/cache/snapd
+sudo rm -rf ~/snap
+
+sudo echo -e "#block snaps\Package: snapd\Pin: release a=*\Pin-Priority: -10" >> /etc/apt/preferences.d/nosnap.pref
+
+# ------------------------------------------------------------------------ #
+# ------------ remover Canonical reports  -------------------------------- #
+
+sudo apt remove --purge apport apport-gtk apport-symptoms -y
+
+# ------------------------------------------------------------------------ #
+# ----------------------------- variaveis -------------------------------- #
+
+DIRECTORY_DOWNLOADS="$HOME/Downloads/program_scripts"
+URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/org.videolan.VLC.flatpakref"
@@ -36,13 +61,10 @@ FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/com.usebottles.bottles.flatpakref"
 )
 
-URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-
-DIRECTORY_DOWNLOADS="$HOME/Downloads/program_scripts"
-
 PROGRAMS_FOR_INSTALL=(
   htop
   flatpak
+  gnome-software
   gnome-software-plugin-flatpak
   git
   default-jre
@@ -57,29 +79,23 @@ PROGRAMS_FOR_INSTALL=(
   vim
   neofetch
   plank
-  gnome-tweak-tool
+  gnome-tweaks
   fonts-hack-ttf
 )
-# ------------------------------------------------------------------------ #
 
-# ----------------------------- requirements ----------------------------- #
-## removing locks from apt ##
+# -------------------------------------------=----------------------------- #
+# ----------------------------- requerimentos ----------------------------- #
+
+## removendo lock do apt ##
 sudo rm /var/lib/dpkg/lock-frontend ; sudo rm /var/cache/apt/archives/lock;
 
-## Updating the repository ##
+## Atualizando repositorio ##
 sudo apt update -y
 
-## Adding third-party repositories ##
-sudo add-apt-repository "$PPA_SHUTTER" -y
-sudo add-apt-repository "$PPA_FLATPAK" -y
-sudo add-apt-repository "$PPA_PEEK" -y
-# ---------------------------------------------------------------------- #
+# --------------------------------------------------------------------- #
+# ----------------------------- execucao ------------------------------ #
 
-# ----------------------------- execution ------------------------------ #
-## updating the repository after adding new repositories ##
-sudo apt update -y
-
-# install programs with apt
+# instalacao de programas com apt
 for program_name in ${PROGRAMS_FOR_INSTALL[@]}; do
   if ! dpkg -l | grep -q $program_name; then # only install if not already installed
     apt install "$program_name" -y
@@ -88,39 +104,36 @@ for program_name in ${PROGRAMS_FOR_INSTALL[@]}; do
   fi
 done
 
-## downloading and installing external programs ##
+## downloading e instalando programas ##
 mkdir -p ~/.icons && mkdir -p ~/.themes
 mkdir $DIRECTORY_DOWNLOADS
 
 wget -c "$URL_GOOGLE_CHROME"         -P "$DIRECTORY_DOWNLOADS"
 sudo gdebi $DIRECTORY_DOWNLOADS/*.deb -n
 
-## installing .flatpakref packages downloaded in the previous session ##
+## Instalacao de flatpaks ##
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 for flatpak_name in ${FLATPAKS_FOR_INSTALL[@]}; do  
   sudo flatpak install --from $flatpak_name -y  
 done
 
-## removing Snap##
-sudo apt remove --purge snapd gnome-software-plugin-snap -y
-sudo rm -rf /var/cache/snapd
-sudo rm -rf ~/snap
+# ------------------------------------------------------------------------------- #
+# ---------------------- menos uso de memoria swap ------------------------------ #
 
-## removing Canonical reports ##
-sudo apt remove --purge apport apport-gtk apport-symptoms -y
-
-## less use of swap ##
 sudo echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> /etc/sysctl.conf 
 
-# -------------------------------------------------------------------------- #
+# ------------------------------------------------------------------------ #
+# ----------------------------- pos instalacao --------------------------- #
 
-# -----------------------------post installation --------------------------- #
-## removing directory ##
+## removendo diretorios ##
 rm -rf $DIRECTORY_DOWNLOADS 
 
-## finalizing, updating and cleaning ##
+## finalizando ##
 sudo apt update && sudo apt full-upgrade -y
 flatpak update
 sudo apt autoclean
 sudo apt autoremove -y
-# -------------------------------------------------------------------------- #
 
+## reiniciar o sistema ##
+sudo shutdown -r now
