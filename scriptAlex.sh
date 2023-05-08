@@ -81,6 +81,10 @@ PROGRAMS_FOR_INSTALL=(
   plank
   gnome-tweaks
   fonts-hack-ttf
+  qemu
+  qemu-kvm
+  virt-manager
+  bridge-utils
 )
 
 # -------------------------------------------=----------------------------- #
@@ -128,6 +132,17 @@ sudo echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> 
 
 ## removendo diretorios ##
 rm -rf $DIRECTORY_DOWNLOADS 
+
+## adicionando usuario corrente no grupo  libvirt
+sudo useradd -g $USER libvirt
+sudo useradd -g $USER libvirt-kvm
+
+sudo systemctl enable libvirtd.service
+#sudo systemctl start libvirtd.service   
+
+## Verificando
+LC_ALL=C lscpu | grep Virtualization
+egrep -c '(vmx|svm)' /proc/cpuinfo 
 
 ## finalizando ##
 sudo apt update && sudo apt full-upgrade -y
