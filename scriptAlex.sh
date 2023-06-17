@@ -59,6 +59,7 @@ FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/org.filezillaproject.Filezilla.flatpakref"
 	"https://dl.flathub.org/repo/appstream/org.ppsspp.PPSSPP.flatpakref"
 	"https://dl.flathub.org/repo/appstream/com.usebottles.bottles.flatpakref"
+ 	"https://flathub.org/pt-BR/apps/io.github.mimbrero.WhatsAppDesktop"
 )
 
 PROGRAMS_FOR_INSTALL=(
