@@ -3,26 +3,26 @@
 # --------------------------------------------------------------------------- #
 # ----------------------------- remover snap -------------------------------- #
 
-sudo snap remove --purge firefox
-sudo snap remove --purge snap-store
-sudo snap remove --purge gnome-3-38-2004
-sudo snap remove --purge gtk-common-themes
-sudo snap remove --purge snapd-desktop-integration
-sudo snap remove --purge bare
-sudo snap remove --purge core20
-sudo snap remove --purge snapd gnome-software-plugin-snap -y
+snap remove --purge firefox
+snap remove --purge snap-store
+snap remove --purge gnome-3-38-2004
+snap remove --purge gtk-common-themes
+snap remove --purge snapd-desktop-integration
+snap remove --purge bare
+snap remove --purge core20
+snap remove --purge snapd gnome-software-plugin-snap -y
 
-sudo apt purge snapd -y
+apt purge snapd -y
 
-sudo rm -rf /var/cache/snapd
-sudo rm -rf ~/snap
+rm -rf /var/cache/snapd
+rm -rf ~/snap
 
-sudo echo -e "#block snaps\Package: snapd\Pin: release a=*\Pin-Priority: -10" >> /etc/apt/preferences.d/nosnap.pref
+echo -e "#block snaps\Package: snapd\Pin: release a=*\Pin-Priority: -10" >> /etc/apt/preferences.d/nosnap.pref
 
 # ------------------------------------------------------------------------ #
 # ------------ remover Canonical reports  -------------------------------- #
 
-sudo apt remove --purge apport apport-gtk apport-symptoms -y
+apt remove --purge apport apport-gtk apport-symptoms -y
 
 # ------------------------------------------------------------------------ #
 # ----------------------------- variaveis -------------------------------- #
@@ -82,20 +82,26 @@ PROGRAMS_FOR_INSTALL=(
   plank
   gnome-tweaks
   fonts-hack-ttf
-  qemu
-  qemu-kvm
-  virt-manager
-  bridge-utils
+  qemu 
+  qemu-kvm 
+  libvirt-clients 
+  libvirt-daemon-system 
+  bridge-utils 
+  virt-manager 
+  libguestfs-tools
+  npm
+  mysql-server
+  docker.io
 )
 
 # -------------------------------------------=----------------------------- #
 # ----------------------------- requerimentos ----------------------------- #
 
 ## removendo lock do apt ##
-sudo rm /var/lib/dpkg/lock-frontend ; sudo rm /var/cache/apt/archives/lock;
+rm /var/lib/dpkg/lock-frontend ; rm /var/cache/apt/archives/lock;
 
 ## Atualizando repositorio ##
-sudo apt update -y
+apt update -y
 
 # --------------------------------------------------------------------- #
 # ----------------------------- execucao ------------------------------ #
@@ -114,19 +120,19 @@ mkdir -p ~/.icons && mkdir -p ~/.themes
 mkdir $DIRECTORY_DOWNLOADS
 
 wget -c "$URL_GOOGLE_CHROME"         -P "$DIRECTORY_DOWNLOADS"
-sudo gdebi $DIRECTORY_DOWNLOADS/*.deb -n
+gdebi $DIRECTORY_DOWNLOADS/*.deb -n
 
 ## Instalacao de flatpaks ##
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 for flatpak_name in ${FLATPAKS_FOR_INSTALL[@]}; do  
-  sudo flatpak install --from $flatpak_name -y  
+  flatpak install --from $flatpak_name -y  
 done
 
 # ------------------------------------------------------------------------------- #
 # ---------------------- menos uso de memoria swap ------------------------------ #
 
-sudo echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> /etc/sysctl.conf 
+echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> /etc/sysctl.conf 
 
 # ------------------------------------------------------------------------ #
 # ----------------------------- pos instalacao --------------------------- #
@@ -135,10 +141,20 @@ sudo echo -e "#less use of swap\nvm.swappiness=10\nvm.vfs_cache_pressure=50" >> 
 rm -rf $DIRECTORY_DOWNLOADS 
 
 ## adicionando usuario corrente no grupo  libvirt
-sudo useradd -g $USER libvirt
-sudo useradd -g $USER libvirt-kvm
+useradd -g $USER libvirt
+useradd -g $USER libvirt-kvm
+usermod -aG docker $USER
 
-sudo systemctl enable libvirtd.service
+
+echo 1 | tee /sys/module/kvm/parameters/ignore_msrs
+
+systemctl enable --now libvirtd
+systemctl enable --now virtlogd
+
+modprobe kvm
+groupadd docker
+
+systemctl enable libvirtd.service
 #sudo systemctl start libvirtd.service   
 
 ## Verificando
@@ -146,10 +162,10 @@ LC_ALL=C lscpu | grep Virtualization
 egrep -c '(vmx|svm)' /proc/cpuinfo 
 
 ## finalizando ##
-sudo apt update && sudo apt full-upgrade -y
+apt update && apt full-upgrade -y
 flatpak update
-sudo apt autoclean
-sudo apt autoremove -y
+apt autoclean
+apt autoremove -y
 
 ## reiniciar o sistema ##
-sudo shutdown -r now
+shutdown -r now
