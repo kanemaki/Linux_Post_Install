@@ -9,6 +9,6 @@ After repeating this process for two weekends testing
 I decided to create this script that makes my desktop ready for use.
 
 # Use
-Change the script execution permission: ```chmod 755 scriptAlex.sh```
+Change the script execution permission: ```chmod 755 ubuntuScript.sh```
 
-Then run the script: ```./scriptAlex.sh```
+Then run the script: ```./ubuntuScript.sh```
