@@ -92,6 +92,10 @@ PROGRAMS_FOR_INSTALL=(
   npm
   mysql-server
   docker.io
+  golang-go
+  aspnetcore-runtime-7.0
+  dotnet-runtime-7.0
+  zlib1g
 )
 
 # -------------------------------------------=----------------------------- #
