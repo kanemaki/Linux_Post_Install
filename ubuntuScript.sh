@@ -59,7 +59,7 @@ FLATPAKS_FOR_INSTALL=(
 	"https://dl.flathub.org/repo/appstream/org.filezillaproject.Filezilla.flatpakref"
 	"https://dl.flathub.org/repo/appstream/org.ppsspp.PPSSPP.flatpakref"
 	"https://dl.flathub.org/repo/appstream/com.usebottles.bottles.flatpakref"
- 	"https://flathub.org/pt-BR/apps/io.github.mimbrero.WhatsAppDesktop"
+
 )
 
 PROGRAMS_FOR_INSTALL=(
@@ -96,6 +96,18 @@ PROGRAMS_FOR_INSTALL=(
   aspnetcore-runtime-7.0
   dotnet-runtime-7.0
   zlib1g
+  timeshift
+  deluge
+  emacs
+  gnucash
+  pidgin
+  clamtk
+  terminator
+  ardour
+  audacity
+  krita
+  gnome-screenshot
+  taskwarrior
 )
 
 # -------------------------------------------=----------------------------- #
