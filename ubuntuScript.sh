@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##configurando usuario e email para o git##
+echo “Digite o seu nome de usuario no git?”
+read nome_git;
+
+echo “Digite o seu email de usuario no git?”
+read email_git;
+
+git config --global user.email $email_git
+git config --global user.name $nome_git
+
 # --------------------------------------------------------------------------- #
 # ----------------------------- remover snap -------------------------------- #
 
@@ -92,6 +102,7 @@ PROGRAMS_FOR_INSTALL=(
   npm
   mysql-server
   docker.io
+  docker-compose
   golang-go
   aspnetcore-runtime-7.0
   dotnet-runtime-7.0
@@ -173,19 +184,11 @@ groupadd docker
 systemctl enable libvirtd.service
 #sudo systemctl start libvirtd.service   
 
+systemctl enable --now docker docker.socket containerd
+
 ## Verificando
 LC_ALL=C lscpu | grep Virtualization
 egrep -c '(vmx|svm)' /proc/cpuinfo 
-
-##configurando usuario e email para o git##
-echo “Digite o seu nome de usuario no git?”
-read nome_git;
-
-echo “Digite o seu email de usuario no git?”
-read email_git;
-
-git config --global user.email $email_git
-git config --global user.name $nome_git
 
 ## finalizando ##
 apt update && apt full-upgrade -y
