@@ -97,7 +97,6 @@ PROGRAMS_FOR_INSTALL=(
   virt-manager 
   libguestfs-tools
   npm
-  mysql-server
   docker.io
   docker-compose
   golang-go
