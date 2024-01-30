@@ -117,7 +117,7 @@ PROGRAMS_FOR_INSTALL=(
   taskwarrior
 )
 
-# -------------------------------------------=----------------------------- #
+# ------------------------------------------------------------------------- #
 # ----------------------------- requerimentos ----------------------------- #
 
 ## removendo lock do apt ##
@@ -188,6 +188,11 @@ egrep -c '(vmx|svm)' /proc/cpuinfo
 
 git config --global user.email $email_git
 git config --global user.name $nome_git
+
+## Update NodeJS
+npm cache clean -f
+npm install -g n
+sudo n stable
 
 ## finalizando ##
 apt update && apt full-upgrade -y
