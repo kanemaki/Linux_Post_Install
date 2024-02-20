@@ -194,6 +194,14 @@ npm cache clean -f
 npm install -g n
 sudo n stable
 
+## Install the .Net SDK
+sudo apt-get update && \
+  sudo apt-get install -y dotnet-sdk-8.0
+
+## Install the .Net runtime
+sudo apt-get update && \
+  sudo apt-get install -y aspnetcore-runtime-8.0
+
 ## finalizando ##
 apt update && apt full-upgrade -y
 flatpak update
