@@ -13,4 +13,7 @@ Change the script execution permission: ```chmod 755 ubuntuScript.sh```
 
 Then run the script: ```./ubuntuScript.sh```
 
-Or just run the command in the terminal: ```shell sh -c "$(curl -fsSL https://raw.githubusercontent.com/kanemaki/Linux_Post_Install/main/ubuntuScript.sh)"```
+Or just run the command in the terminal:
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/kanemaki/Linux_Post_Install/main/ubuntuScript.sh)"
+```
