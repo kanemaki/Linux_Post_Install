@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# ubuntuScript.sh - Instalar e configurar programas no Ubuntu (20.04 LTS ou superior)
+# ubuntuScript.sh - Instalar e configurar programas no Ubuntu (22.04.04 LTS ou superior)
 #
 # Autor:         Alexandre Florentino
 #
