@@ -253,6 +253,7 @@ config_libvirt(){
 config_git(){
   git config --global user.email $email_git
   git config --global user.name $nome_git
+  ssh-keygen -t ed25519 -C $email_git
 }
 
 system_restart(){
