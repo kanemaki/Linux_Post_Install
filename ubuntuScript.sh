@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# ubuntuScript.sh - Instalar e configurar programas no Ubuntu (22.04.04 LTS ou superior)
+# ubuntuScript.sh - Instalar e configurar programas 
 #
 # Autor:         Alexandre Florentino
 #
@@ -13,7 +13,7 @@
 set -e
 
 # ------------------------------------------------------------------------ #
-# -------------------------------TESTES E REQUISITOS---------------------- #
+# -------------------------------TESTES---------------------- #
 testes_internet(){
   ## Internet conectando?
   if ! ping -c 1 8.8.8.8 -q &> /dev/null; then
@@ -27,18 +27,11 @@ testes_internet(){
 # ------------------------------------------------------------------------ #
 # ----------------------------- VARIÁVEIS -------------------------------- #
 
-## Configurando usuario e email para o git##
-echo “Digite o seu nome de usuario no git?”
-read nome_git;
-
-echo “Digite o seu email de usuario no git?”
-read email_git;
-
 ## URLS
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 ## DIRETÓRIOS E ARQUIVOS
-DIRECTORY_DOWNLOADS="$HOME/Downloads/program_scripts"
+DIRECTORY_DOWNLOADS="${home}/Downloads/program_scripts"
 
 ## CORES
 VERMELHO='\e[1;91m'
@@ -86,26 +79,13 @@ PROGRAMS_FOR_INSTALL=(
   vim
   neofetch
   plank
-  gnome-tweaks
   fonts-hack-ttf
-  qemu 
-  qemu-kvm 
-  libvirt-clients 
-  libvirt-daemon-system 
-  bridge-utils 
-  virt-manager 
-  libguestfs-tools
   npm
-  docker.io
-  docker-compose
   golang-go
-  aspnetcore-runtime-7.0
-  dotnet-runtime-7.0
   zlib1g
   timeshift
   deluge
   emacs
-  gnucash
   pidgin
   clamtk
   terminator
@@ -113,46 +93,16 @@ PROGRAMS_FOR_INSTALL=(
   audacity
   krita
   gnome-screenshot
-  taskwarrior
+
 )
 
 # ------------------------------------------------------------------------ #
 # ----------------------------- FUNÇÕES ---------------------------------- #
-snap_remove(){
-  ## Remover snap
-  echo -e "${VERMELHO}[INFO] - Removendo SNAP${SEM_COR}"
-  snap remove --purge firefox
-  snap remove --purge snap-store
-  snap remove --purge gnome-3-38-2004
-  snap remove --purge gtk-common-themes
-  snap remove --purge snapd-desktop-integration
-  snap remove --purge bare
-  snap remove --purge core20
-  snap remove --purge snapd gnome-software-plugin-snap -y
-  
-  apt purge snapd -y
 
-  rm -rf /var/cache/snapd
-  rm -rf ~/snap
-
-  echo -e "#block snaps\Package: snapd\Pin: release a=*\Pin-Priority: -10" >> /etc/apt/preferences.d/nosnap.pref
-}
-
-canonical_reports_remove(){
-  ## Remover Canonical reports
-  echo -e "${VERMELHO}[INFO] - Removendo Canonical reports${SEM_COR}"
-  apt remove --purge apport apport-gtk apport-symptoms -y
-}
 
 apt_update(){
   echo -e "${VERDE}[INFO] - APT Update${SEM_COR}"
   apt update && apt full-upgrade -y
-}
-
-lock_apt_remove(){
-  ## Removendo lock do apt
-  echo -e "${VERDE}[INFO] - Removendo travas do apt${SEM_COR}"
-  rm /var/lib/dpkg/lock-frontend ; rm /var/cache/apt/archives/lock;
 }
 
 less_memory_swap(){
@@ -167,17 +117,6 @@ final_install(){
   flatpak update
   apt autoclean
   apt autoremove -y
-}
-
-dotnet_install(){
-	echo -e "${VERDE}[INFO] - Instalando .Net SDK e .Net runtime${SEM_COR}"
-  ## Install the .Net SDK
-  sudo apt-get update && \
-    sudo apt-get install -y dotnet-sdk-8.0
-
-  ## Install the .Net runtime
-  sudo apt-get update && \
-    sudo apt-get install -y aspnetcore-runtime-8.0
 }
 
 program_install(){	
@@ -225,37 +164,6 @@ update_nodejs(){
   sudo n stable
 }
 
-config_libvirt(){
-  ## Adicionando usuario corrente no grupo  libvirt
-  echo -e "${VERDE}[INFO] - Configuracoes no libvirt${SEM_COR}"
-  useradd -g $USER libvirt
-  useradd -g $USER libvirt-kvm
-  usermod -aG docker $USER
-
-  echo 1 | tee /sys/module/kvm/parameters/ignore_msrs
-
-  systemctl enable --now libvirtd
-  systemctl enable --now virtlogd
-
-  modprobe kvm
-  groupadd docker
-
-  systemctl enable libvirtd.service
-  #sudo systemctl start libvirtd.service   
-
-  systemctl enable --now docker docker.socket containerd
-
-  ## Verificando 
-  LC_ALL=C lscpu | grep Virtualization
-  egrep -c '(vmx|svm)' /proc/cpuinfo 
-}
-
-config_git(){
-  git config --global user.email $email_git
-  git config --global user.name $nome_git
-  ssh-keygen -t ed25519 -C $email_git
-}
-
 system_restart(){
   ## Reiniciar o sistema ##
   shutdown -r now
@@ -265,22 +173,16 @@ echo -e "${VERDE}[INFO] - Script iniciado, instalação em execucao! :)${SEM_COR
 # --------------------------------------------------------------------- #
 # ----------------------------- requerimentos ------------------------- #
 testes_internet
-snap_remove
-canonical_reports_remove
 # --------------------------------------------------------------------- #
 # ----------------------------- execucao ------------------------------ #
 apt_update
-lock_apt_remove
 program_install
 remove_directory
-dotnet_install
 apt_update
 # --------------------------------------------------------------------- #
 # ----------------------------- pos instalacao ------------------------ #
 less_memory_swap
 update_nodejs
-config_libvirt
 final_install
-config_git
 echo -e "${VERDE}[INFO] - Script finalizado, instalação concluída! :)${SEM_COR}"
 system_restart
