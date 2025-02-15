@@ -26,12 +26,12 @@ testes_internet(){
 
 # ------------------------------------------------------------------------ #
 # ----------------------------- VARIÁVEIS -------------------------------- #
-
-## URLS
+IDUSUARIO="$(stat -c "%u" $(tty))"
+USUARIO="$(grep -w $IDUSUARIO /etc/passwd | cut -d ":" -f "1" | xargs)"
 URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 ## DIRETÓRIOS E ARQUIVOS
-DIRECTORY_DOWNLOADS="${home}/Downloads/program_scripts"
+DIRECTORY_DOWNLOADS="/home/$USUARIO/Downloads/program_scripts"
 
 ## CORES
 VERMELHO='\e[1;91m'
