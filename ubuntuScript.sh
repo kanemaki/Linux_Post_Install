@@ -93,7 +93,7 @@ PROGRAMS_FOR_INSTALL=(
   audacity
   krita
   gnome-screenshot
-
+  preload
 )
 
 # ------------------------------------------------------------------------ #
