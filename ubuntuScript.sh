@@ -95,6 +95,7 @@ PROGRAMS_FOR_INSTALL=(
   krita
   gnome-screenshot
   preload
+  build-essential
 )
 
 # ------------------------------------------------------------------------ #
